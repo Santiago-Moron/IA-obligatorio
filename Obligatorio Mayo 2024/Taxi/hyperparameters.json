@@ -1,1 +1,1 @@
-{"alfa": 0.4, "gamma": 0.6, "epsilon": 0.6}
+{"alpha": 0.9757945109709336, "gamma": 0.4305079401023407, "epsilon": 5e-324, "epsilonVariability": 0.4383219914013021, "episodes": 9999, "train_avg_reward": 5.3302330233023305, "test_avg__reward": 8.14}
