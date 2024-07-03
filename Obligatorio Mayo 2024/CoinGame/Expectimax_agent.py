@@ -3,12 +3,12 @@ from agent import Agent
 from board import Board
 
 
-class Minimax_agent(Agent):
+class ExpectimaxAgent(Agent):
     def __init__(self, player):
         super().__init__(player)
 
     def next_action(self, obs):
-        best_action, _ = self.minimax(obs, self.player, 15, float('-inf'), float('inf'))
+        best_action, _ = self.expectimax(obs, self.player, 4, float('-inf'), float('inf'))
         return best_action
     
     def heuristic_utility(self, board: Board):
@@ -21,7 +21,7 @@ class Minimax_agent(Agent):
             nim_sum ^= amount
         return -1 if nim_sum == 0 else 1
         
-    def minimax(self, obs, player, depth, alpha, beta):
+    def expectimax(self, obs, player, depth, alpha, beta):
         ends, winner = obs.is_end(player)
         if ends:
             if winner == self.player:
@@ -46,10 +46,11 @@ class Minimax_agent(Agent):
 
         if player != self.player:
             min_eval = float('inf')
+            cantActions = action_boards.__len__()
             for action, next_board in action_boards:
-                _, eval = self.minimax(next_board, (player % 2) + 1, depth - 1, alpha, beta)
-                if eval < min_eval:
-                    min_eval = eval
+                _, eval = self.expectimax(next_board, (player % 2) + 1, depth - 1, alpha, beta)
+                if eval/cantActions < min_eval:   ##Uniform distribution
+                    min_eval = eval/cantActions
                     best_action = action
                 alpha = max(alpha, min_eval)
                 if alpha >= beta:
@@ -59,7 +60,7 @@ class Minimax_agent(Agent):
             
             max_eval = float('-inf')
             for action, next_board in action_boards:
-                _, eval = self.minimax(next_board, (player % 2) + 1, depth - 1, alpha, beta)
+                _, eval = self.expectimax(next_board, (player % 2) + 1, depth - 1, alpha, beta)
                 if eval > max_eval:
                     max_eval = eval
                     best_action = action
