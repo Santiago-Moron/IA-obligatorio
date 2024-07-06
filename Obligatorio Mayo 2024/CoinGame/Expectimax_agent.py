@@ -8,7 +8,7 @@ class ExpectimaxAgent(Agent):
         super().__init__(player)
 
     def next_action(self, obs):
-        best_action, _ = self.expectimax(obs, self.player, 4, float('-inf'), float('inf'))
+        best_action, _ = self.expectimax(obs, self.player, 6, float('-inf'), float('inf'))
         return best_action
     
     def heuristic_utility(self, board: Board):
@@ -49,15 +49,15 @@ class ExpectimaxAgent(Agent):
             cantActions = action_boards.__len__()
             for action, next_board in action_boards:
                 _, eval = self.expectimax(next_board, (player % 2) + 1, depth - 1, alpha, beta)
-                if eval/cantActions < min_eval:   ##Uniform distribution
-                    min_eval = eval/cantActions
+                min_eval = min_eval + eval/cantActions   ##Uniform distribution
+                if eval/cantActions < min_eval:
                     best_action = action
                 alpha = max(alpha, min_eval)
                 if alpha >= beta:
                     break
             return best_action, min_eval
         else:
-            
+            cantActions = action_boards.__len__()
             max_eval = float('-inf')
             for action, next_board in action_boards:
                 _, eval = self.expectimax(next_board, (player % 2) + 1, depth - 1, alpha, beta)
