@@ -7,11 +7,11 @@ class ExpectimaxAgent(Agent):
         super().__init__(player)
 
     def next_action(self, board):
-        action, _ = self.minimax(board, self.player, 4, float('-inf'), float('inf'))
+        action, _ = self.minimax(board, self.player, 2, float('-inf'), float('inf'))
         return action
 
     def heuristic_utility(self, board):
-        return self.nim_sum(board) + self.singleCoins(board)
+        return self.nim_sum(board) + self.coinGroups(board)
 
     def nim_sum(self, board):
         nim_sum = 0
@@ -31,7 +31,7 @@ class ExpectimaxAgent(Agent):
 
 
 
-    def singleCoins(self, board):
+    def coinGroups(self, board):
         count = 0
         for row in board.grid:
             row_count = 0
